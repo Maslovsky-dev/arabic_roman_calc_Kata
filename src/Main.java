@@ -22,7 +22,7 @@ public class Main {
         try {
             validSymbols(input);
         } catch (Exception e) {
-            System.out.println("You entered an invalid character, Arabic and Roman numerals from 1 to 10 inclusive, and operators + - / * are allowed");
+            System.out.println("You entered an invalid character, arabic and aoman numerals from 1 to 10 inclusive, and operators + - / * are allowed");
             System.exit(0);
         }
         try {
@@ -40,14 +40,14 @@ public class Main {
         char operator = parts.get(2).toString().toCharArray()[0];
         try {
             int numbersType = validExpType(parts);
-            if (numbersType == 1){  //Арабская система счисления
+            if (numbersType == 1){  //Arabic numeral system
                 int num1 = Integer.parseInt (parts.get(0).toString()); int num2 = Integer.parseInt (parts.get(1).toString());
                 if (num1>10|num2>10){
                     System.out.println("Error: Entered number is greater than 10"); System.exit(0);
                 }
                 answerInt = evaluateExp(num1,num2,operator); answerString=Integer.toString(answerInt);
             }
-            else if (numbersType==2) { //Римская система счисления
+            else if (numbersType==2) { //Roman numeral system
                 int num1=romanToNum(parts.get(0).toString()); int num2=romanToNum(parts.get(1).toString());
                 answerInt = evaluateExp(num1,num2,operator);
                 if (answerInt <1) {
@@ -92,7 +92,7 @@ public class Main {
         partsFull.add(parts[0].trim()); partsFull.add(parts[1].trim()); partsFull.add(input.charAt((Integer) entryIndexArray.get(0)));
         return partsFull;
     }
-    public static int validExpType (ArrayList args) throws Exception { // Specifies the input data type (Roman or Arabic)
+    public static int validExpType (ArrayList args) throws Exception { // Specifies the input data type (roman or arabic)
         int numType =0;
         String regexArab = "^[123456789][0]{0,1}$";
         String regexRoman = "^(I|II|III|IV|V|VI|VII|VIII|IX|X)$";
