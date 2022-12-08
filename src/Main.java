@@ -2,7 +2,6 @@
  * @author Valerii Maslovskii
  */
 
-
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -23,19 +22,19 @@ public class Main {
         try {
             validSymbols(input);
         } catch (Exception e) {
-            System.out.println("Вы ввели недопустимый символ, допускаются арабские и римские цифры от 1 до 10 включительно и операторы + - / *");
+            System.out.println("You entered an invalid character, Arabic and Roman numerals from 1 to 10 inclusive, and operators + - / * are allowed");
             System.exit(0);
         }
         try {
             validMinus(input);
         } catch (Exception e) {
-            System.out.println("Вы ввели отрицательное число");
+            System.out.println("You entered a negative number");
             System.exit(0);
         }
         try {
             parts = Parts(input);
         } catch (Exception e) {
-            System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+            System.out.println("The format of the mathematical operation does not satisfy the task - two operands and one operator (+, -, /, *)");
             System.exit(0);
         }
         char operator = parts.get(2).toString().toCharArray()[0];
@@ -44,7 +43,7 @@ public class Main {
             if (numbersType == 1){  //Арабская система счисления
                 int num1 = Integer.parseInt (parts.get(0).toString()); int num2 = Integer.parseInt (parts.get(1).toString());
                 if (num1>10|num2>10){
-                    System.out.println("Ошибка: введеное число больше 10"); System.exit(0);
+                    System.out.println("Error: Entered number is greater than 10"); System.exit(0);
                 }
                 answerInt = evaluateExp(num1,num2,operator); answerString=Integer.toString(answerInt);
             }
@@ -52,26 +51,26 @@ public class Main {
                 int num1=romanToNum(parts.get(0).toString()); int num2=romanToNum(parts.get(1).toString());
                 answerInt = evaluateExp(num1,num2,operator);
                 if (answerInt <1) {
-                    System.out.println("Ошибка: в римской системе нет отрицательных чисел и 0");
+                    System.out.println("Error: There are no negative numbers in the roman system and 0");
                     System.exit(0);}
                 answerString = numToRoman(answerInt);
             }
         } catch (Exception e) {
-            System.out.println("Ошибка: Смешанные данные или неправильный ввод (только целые числа от 1 до 10 включительно)");
+            System.out.println("Error: Mixed data or invalid input (only integers from 1 to 10 inclusive)");
             System.exit(0);
         }
         return answerString;
     }
-    public static void validSymbols (String input) throws Exception { // Проверяет строку на наличие запрещенных символов
+    public static void validSymbols (String input) throws Exception { // Checks a string for forbidden characters
         String regex = ".*[^0-9\\+\\-\\*\\/IVX\\s].*";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(input);
         if (matcher.matches()) throw new Exception();
     }
-    public static void validMinus (String input) throws Exception { // Проверяет строку на наличие минуса в начале
+    public static void validMinus (String input) throws Exception { // Checks if a string has a negative numbers
         if (input.charAt(0)=='-') throw new Exception();
     }
-    public static ArrayList Parts (String input) throws Exception { // Проверяет строку на соответствие формата, выделяет числа и оператор
+    public static ArrayList Parts (String input) throws Exception { // Checks a string for format matching, highlights numbers and operator
         int inputLength = input.length();
         int k = 0;
         ArrayList entryIndexArray = new ArrayList();
@@ -93,20 +92,16 @@ public class Main {
         partsFull.add(parts[0].trim()); partsFull.add(parts[1].trim()); partsFull.add(input.charAt((Integer) entryIndexArray.get(0)));
         return partsFull;
     }
-    public static int validExpType (ArrayList args) throws Exception { // Определяет систему счисления
+    public static int validExpType (ArrayList args) throws Exception { // Specifies the input data type (Roman or Arabic)
         int numType =0;
         String regexArab = "^[123456789][0]{0,1}$";
         String regexRoman = "^(I|II|III|IV|V|VI|VII|VIII|IX|X)$";
         Pattern patternArab = Pattern.compile(regexArab);
         Pattern patternRoman = Pattern.compile(regexRoman);
         Matcher matcherArab1 = patternArab.matcher(args.get(0).toString()); boolean boolArab1 = matcherArab1.matches();
-//                System.out.println(args.get(0) +" Arab "+matcherArab1.matches());
         Matcher matcherArab2 = patternArab.matcher(args.get(1).toString()); boolean boolArab2 = matcherArab2.matches();
-//                System.out.println(args.get(1) +" Arab "+matcherArab2.matches());
         Matcher matcherRoman1 = patternRoman.matcher(args.get(0).toString()); boolean boolRoman1 = matcherRoman1.matches();
-//                 System.out.println(args.get(0) +" Roman "+matcherRoman1.matches());
         Matcher matcherRoman2 = patternRoman.matcher(args.get(1).toString()); boolean boolRoman2 = matcherRoman2.matches();
-//                 System.out.println(args.get(1) +" Roman "+matcherRoman2.matches());
         if (boolArab1 & boolArab2){
             numType =1;}
         else if (boolRoman1 & boolRoman2) {
@@ -115,7 +110,7 @@ public class Main {
         else if (boolArab1==boolArab2==boolRoman1==boolRoman2) throw new Exception();
         return numType;
     }
-    public static int evaluateExp (int num1, int num2, char operator) throws Exception { // Вычисляет выражение
+    public static int evaluateExp (int num1, int num2, char operator) throws Exception { // Evaluate expression
         int answer;
         if (operator=='+'){answer = num1+num2;}
         else if (operator=='-'){answer = num1-num2;}
@@ -124,7 +119,7 @@ public class Main {
         else {answer=0; throw new Exception();}
         return answer;
     }
-    public static int romanToNum (String roman) throws Exception { // Переводит римские цифры в арабские
+    public static int romanToNum (String roman) throws Exception { // Convert roman to integer
         int convResult;
         if (roman.equals("I")){convResult=1;}
         else if (roman.equals("II")){convResult=2;}
@@ -139,7 +134,7 @@ public class Main {
         else {convResult=0; throw new Exception();}
         return convResult;
     }
-    public static String numToRoman (int num) throws Exception { // Переводит арабское число в римское
+    public static String numToRoman (int num) throws Exception { // Convert integer to roman
         String convResult="";
         int units = num%10;
         int tens = num/10;
